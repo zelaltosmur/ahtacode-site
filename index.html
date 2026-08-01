@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="AhtaCode — Kod öğrenmenin en eğlenceli yolu">
 <meta property="og:description" content="Günde 5 dakikada kod öğren. 8 alan, 4.000+ soru, canlı düellolar.">
-<meta property="og:image" content="https://ahtacode.com/gorsel/icon.png">
+<meta property="og:image" content="https://ahtacode.com/gorsel/kart.png">
 <meta property="og:url" content="https://ahtacode.com">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -139,6 +139,22 @@ nav.ust a:hover { color: var(--ana); }
 .ust-cta { padding: 11px 20px; font-size: 14px; border-radius: 13px; }
 @media (max-width: 860px) { nav.ust a:not(.ust-cta) { display: none; } }
 
+/* Dar ekranda marka ile düğme yan yana sığmıyor ve üst çubuk
+   sayfayı yatay kaydırılabilir hale getiriyordu — kaydırma
+   çubuğu tüm sayfada görünüyor, tek bir öğe taşsa bile. */
+@media (max-width: 420px) {
+  .kap { padding: 0 16px; }
+  header .kap { gap: 10px; }
+  .marka { font-size: 18px; }
+  .marka img { width: 30px; height: 30px; }
+  .ust-cta { padding: 10px 14px; font-size: 13px; }
+}
+/* Bu genişliğin altında marka adı da sığmıyor; ikon tek başına
+   kalıyor, düğme kalıyor. Düğme her koşulda görünmeli. */
+@media (max-width: 340px) {
+  .marka { font-size: 0; gap: 0; }
+}
+
 /* ------------------------------------------------------------
    Kahraman bölümü
    ------------------------------------------------------------ */
@@ -186,7 +202,11 @@ nav.ust a:hover { color: var(--ana); }
   position: absolute; width: 340px; height: 340px; border-radius: 50%;
   background: radial-gradient(circle, rgba(255,255,255,.20), transparent 68%);
 }
-.maskot-alan img { position: relative; width: min(330px, 74vw); filter: drop-shadow(0 24px 40px rgba(0,0,0,.35));
+/* height:auto şart: img üzerindeki height niteliği (384) CSS'te
+   ezilmezse görsel eziliyor. Nitelikler yalnızca oranı vermek
+   ve yükleme sırasında zıplamayı önlemek için duruyorlar. */
+.maskot-alan img { position: relative; width: min(330px, 74vw); height: auto;
+                   filter: drop-shadow(0 24px 40px rgba(0,0,0,.35));
                    animation: zipla 4.5s ease-in-out infinite; }
 @keyframes zipla { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-14px) } }
 
@@ -388,7 +408,7 @@ footer.dip { background: var(--zemin-alt); border-top: 1px solid var(--cizgi); p
 <header id="ustCubuk">
   <div class="kap">
     <a class="marka" href="/">
-      <img src="/gorsel/icon.png" alt="">
+      <img src="/gorsel/logo.png" width="36" height="36" alt="">
       AhtaCode
     </a>
     <nav class="ust">
@@ -425,7 +445,7 @@ footer.dip { background: var(--zemin-alt); border-top: 1px solid var(--cizgi); p
 
     <div class="maskot-alan">
       <span class="maskot-halka"></span>
-      <img src="/gorsel/varsayilan.png" alt="AhtaCode maskotu, mor bir ahtapot">
+      <img src="/gorsel/varsayilan.png" width="384" height="384" alt="AhtaCode maskotu, mor bir ahtapot">
       <span class="ucan a">🔥 <span>12 günlük seri</span></span>
       <span class="ucan b">⭐ <span>+50 XP</span></span>
       <span class="ucan c">👑 <span>Bölüm tamam!</span></span>
@@ -675,7 +695,7 @@ footer.dip { background: var(--zemin-alt); border-top: 1px solid var(--cizgi); p
         </ul>
       </div>
       <div class="gorsel" style="text-align:center">
-        <img src="/gorsel/kupa.png" alt="Kupa tutan AhtaCode maskotu" style="width:min(280px,70vw)">
+        <img src="/gorsel/kupa.png" width="384" height="384" loading="lazy" alt="Kupa tutan AhtaCode maskotu" style="width:min(280px,70vw);height:auto">
       </div>
     </div>
   </div>
@@ -787,7 +807,7 @@ footer.dip { background: var(--zemin-alt); border-top: 1px solid var(--cizgi); p
   <span class="kabarcik" style="width:260px;height:260px;top:-80px;left:8%"></span>
   <span class="kabarcik" style="width:180px;height:180px;bottom:-60px;right:10%;animation-delay:3s"></span>
   <div class="kap">
-    <img src="/gorsel/ninja.png" alt="">
+    <img src="/gorsel/ninja.png" width="384" height="384" loading="lazy" alt="" style="height:auto">
     <h2>İlk dersin seni bekliyor</h2>
     <p>Yakında App Store ve Google Play'de. Çıktığında ilk sen bil.</p>
     <div class="cta-sira">
@@ -803,7 +823,7 @@ footer.dip { background: var(--zemin-alt); border-top: 1px solid var(--cizgi); p
   <div class="kap">
     <div class="dip-sira">
       <div>
-        <a class="marka" href="/"><img src="/gorsel/icon.png" alt="">AhtaCode</a>
+        <a class="marka" href="/"><img src="/gorsel/logo.png" width="36" height="36" alt="">AhtaCode</a>
         <p style="margin-top:12px;color:var(--yazi-soluk);font-size:15px;max-width:34ch">
           Kod öğrenmenin oyunlaştırılmış hâli. Türkçe, ücretsiz, her yerde.
         </p>
