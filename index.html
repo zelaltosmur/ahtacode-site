@@ -3,40 +3,838 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AhtaCode</title>
+<title>AhtaCode — Kod öğrenmenin en eğlenceli yolu</title>
+<meta name="description" content="Günde 5 dakikada kod öğren. 8 alan, 4.000+ soru, canlı düellolar ve seri takibiyle Türkçe kod öğrenme uygulaması.">
+<link rel="icon" href="/gorsel/favicon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="AhtaCode — Kod öğrenmenin en eğlenceli yolu">
+<meta property="og:description" content="Günde 5 dakikada kod öğren. 8 alan, 4.000+ soru, canlı düellolar.">
+<meta property="og:image" content="https://ahtacode.com/gorsel/icon.png">
+<meta property="og:url" content="https://ahtacode.com">
+<meta name="twitter:card" content="summary_large_image">
+
 <style>
-  :root { color-scheme: light dark; }
-  body {
-    max-width: 560px; margin: 0 auto; padding: 96px 24px;
-    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    color: #1a1a1a; background: #fff; text-align: center;
+/* ============================================================
+   AhtaCode — ahtacode.com
+   ------------------------------------------------------------
+   Renkler uygulamanın tasarım sisteminden (src/theme.js)
+   birebir alındı. Site ile uygulamanın aynı ürün olduğu
+   ilk saniyede anlaşılsın diye.
+   ============================================================ */
+
+:root {
+  --ana:        #7343E8;
+  --ana-parlak: #8B5CF6;
+  --ana-acik:   #C4B5FD;
+  --ana-koyu:   #4C1FB0;
+  --pembe:      #E040FB;
+  --basari:     #22C55E;
+  --seri:       #FF7A45;
+  --altin:      #FBBF24;
+  --elmas:      #38BDF8;
+  --hata:       #F43F5E;
+
+  --zemin:      #FFFFFF;
+  --zemin-alt:  #F6F5FB;
+  --kart:       #FFFFFF;
+  --cizgi:      #E4E0F2;
+  --yazi:       #16123A;
+  --yazi-soluk: #5F5983;
+
+  --golge:      0 2px 0 rgba(22,18,58,.08);
+  --golge-kart: 0 4px 24px rgba(76,31,176,.08);
+  --r:          20px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ana:        #8B5CF6;
+    --zemin:      #0B0A1F;
+    --zemin-alt:  #100E2B;
+    --kart:       #171433;
+    --cizgi:      #2A2550;
+    --yazi:       #FFFFFF;
+    --yazi-soluk: #A9A4C7;
+    --golge-kart: 0 4px 24px rgba(0,0,0,.4);
   }
-  h1 { font-size: 40px; margin: 0 0 8px; letter-spacing: -0.5px; }
-  .alt { color: #666; margin-bottom: 40px; }
-  nav a {
-    display: inline-block; margin: 0 10px; color: #6d3ff0;
-    text-decoration: none; font-weight: 600;
-  }
-  nav a:hover { text-decoration: underline; }
-  footer { margin-top: 64px; color: #999; font-size: 14px; }
-  footer a { color: inherit; }
-  @media (prefers-color-scheme: dark) {
-    body { color: #e8e8e8; background: #121212; }
-    .alt { color: #9a9a9a; }
-    nav a { color: #a98bff; }
-    footer { color: #777; }
-  }
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--zemin);
+  color: var(--yazi);
+  font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter",
+        Roboto, "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.kap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.12; margin: 0; font-weight: 800; }
+h1 { font-size: clamp(38px, 6.2vw, 66px); }
+h2 { font-size: clamp(28px, 4vw, 42px); }
+h3 { font-size: 21px; letter-spacing: -0.015em; }
+p  { margin: 0; }
+
+a { color: var(--ana); text-decoration: none; }
+
+/* ------------------------------------------------------------
+   Düğmeler — altındaki koyu kenar Duolingo'nun imzası.
+   Basınca aşağı iniyor; dokunma hissi veriyor.
+   ------------------------------------------------------------ */
+.dugme {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 16px 30px; border-radius: 16px; border: 0;
+  font: inherit; font-weight: 800; font-size: 16px;
+  letter-spacing: .02em; text-transform: uppercase;
+  cursor: pointer; white-space: nowrap;
+  transition: transform .06s, filter .15s;
+}
+.dugme-ana {
+  background: var(--basari); color: #06210F;
+  box-shadow: 0 5px 0 #16903F;
+}
+.dugme-ana:hover { filter: brightness(1.06); }
+.dugme-ana:active { transform: translateY(4px); box-shadow: 0 1px 0 #16903F; }
+
+.dugme-cerceve {
+  background: transparent; color: var(--ana);
+  box-shadow: inset 0 0 0 2px var(--cizgi), 0 5px 0 var(--cizgi);
+}
+.dugme-cerceve:active { transform: translateY(4px); box-shadow: inset 0 0 0 2px var(--cizgi), 0 1px 0 var(--cizgi); }
+
+.dugme-beyaz {
+  background: #fff; color: var(--ana-koyu);
+  box-shadow: 0 5px 0 rgba(0,0,0,.22);
+}
+.dugme-beyaz:hover { filter: brightness(.97); }
+.dugme-beyaz:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.22); }
+
+/* ------------------------------------------------------------
+   Üst çubuk
+   ------------------------------------------------------------ */
+header {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--zemin) 85%, transparent);
+  backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s;
+}
+header.kaydi { border-bottom-color: var(--cizgi); }
+header .kap { display: flex; align-items: center; gap: 28px; height: 72px; }
+
+.marka { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 21px;
+         letter-spacing: -.03em; color: var(--yazi); }
+.marka img { width: 36px; height: 36px; border-radius: 10px; }
+
+nav.ust { margin-left: auto; display: flex; gap: 26px; align-items: center; }
+nav.ust a { color: var(--yazi-soluk); font-weight: 600; font-size: 15px; }
+nav.ust a:hover { color: var(--ana); }
+.ust-cta { padding: 11px 20px; font-size: 14px; border-radius: 13px; }
+@media (max-width: 860px) { nav.ust a:not(.ust-cta) { display: none; } }
+
+/* ------------------------------------------------------------
+   Kahraman bölümü
+   ------------------------------------------------------------ */
+.kahraman {
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(900px 500px at 12% -10%, rgba(224,64,251,.28), transparent 62%),
+    radial-gradient(800px 520px at 88% 8%, rgba(56,189,248,.22), transparent 60%),
+    linear-gradient(160deg, #4C1FB0 0%, #7343E8 52%, #8B5CF6 100%);
+  color: #fff;
+  padding: 78px 0 96px;
+}
+/* Kabarcıklar: sayfa yüklenince yavaşça süzülüyorlar. */
+.kabarcik { position: absolute; border-radius: 50%; background: rgba(255,255,255,.07);
+            animation: suzul 14s ease-in-out infinite; pointer-events: none; }
+@keyframes suzul { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-26px) } }
+
+.kahraman .kap { position: relative; display: grid; gap: 56px;
+                 grid-template-columns: 1.1fr .9fr; align-items: center; }
+@media (max-width: 900px) {
+  .kahraman .kap { grid-template-columns: 1fr; text-align: center; gap: 44px; }
+  .kahraman { padding: 52px 0 72px; }
+}
+
+.rozet-ust {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.24);
+  padding: 7px 15px; border-radius: 999px;
+  font-size: 13.5px; font-weight: 700; letter-spacing: .01em;
+  margin-bottom: 22px;
+}
+.kahraman h1 { color: #fff; }
+.kahraman h1 em { font-style: normal; color: #FDE68A; }
+.kahraman .alt { margin-top: 20px; font-size: 19px; line-height: 1.55;
+                 color: rgba(255,255,255,.88); max-width: 30ch; }
+@media (max-width: 900px) { .kahraman .alt { margin-left: auto; margin-right: auto; } }
+
+.cta-sira { display: flex; gap: 14px; margin-top: 34px; flex-wrap: wrap; }
+@media (max-width: 900px) { .cta-sira { justify-content: center; } }
+.cta-not { margin-top: 16px; font-size: 14px; color: rgba(255,255,255,.72); }
+
+/* --- Maskot ve etrafındaki rozetler --- */
+.maskot-alan { position: relative; display: grid; place-items: center; }
+.maskot-halka {
+  position: absolute; width: 340px; height: 340px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,.20), transparent 68%);
+}
+.maskot-alan img { position: relative; width: min(330px, 74vw); filter: drop-shadow(0 24px 40px rgba(0,0,0,.35));
+                   animation: zipla 4.5s ease-in-out infinite; }
+@keyframes zipla { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-14px) } }
+
+.ucan {
+  position: absolute; background: #fff; color: var(--yazi);
+  border-radius: 15px; padding: 10px 15px; font-weight: 800; font-size: 15px;
+  box-shadow: 0 10px 26px rgba(0,0,0,.25);
+  display: flex; align-items: center; gap: 8px; white-space: nowrap;
+  animation: suzul 6s ease-in-out infinite;
+}
+.ucan.a { top: 6%;  left: -4%;  animation-delay: .0s; }
+.ucan.b { top: 42%; right: -8%; animation-delay: .9s; }
+.ucan.c { bottom: 6%; left: 4%;  animation-delay: 1.8s; }
+@media (max-width: 620px) { .ucan.a { left: -2%; } .ucan.b { right: -2%; } }
+
+/* ------------------------------------------------------------
+   Sayı şeridi
+   ------------------------------------------------------------ */
+.seritler { background: var(--zemin-alt); border-bottom: 1px solid var(--cizgi); }
+.serit { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 34px 0; }
+.serit div { text-align: center; }
+.serit b { display: block; font-size: 34px; font-weight: 900; letter-spacing: -.03em;
+           color: var(--ana); line-height: 1.1; }
+.serit span { font-size: 14px; color: var(--yazi-soluk); font-weight: 600; }
+@media (max-width: 640px) { .serit { grid-template-columns: repeat(2, 1fr); gap: 26px; } }
+
+/* ------------------------------------------------------------
+   Ortak bölüm düzeni
+   ------------------------------------------------------------ */
+section.blok { padding: 88px 0; }
+section.blok.alt { background: var(--zemin-alt); }
+.baslik-orta { text-align: center; max-width: 620px; margin: 0 auto 52px; }
+.baslik-orta p { margin-top: 16px; color: var(--yazi-soluk); font-size: 18px; }
+.etiket { display: inline-block; font-size: 13px; font-weight: 800; letter-spacing: .08em;
+          text-transform: uppercase; color: var(--ana); margin-bottom: 14px; }
+
+/* --- Adımlar --- */
+.adimlar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+@media (max-width: 860px) { .adimlar { grid-template-columns: 1fr; } }
+.adim { background: var(--kart); border: 1px solid var(--cizgi); border-radius: var(--r);
+        padding: 30px 26px; box-shadow: var(--golge-kart); }
+.adim .no { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center;
+            font-weight: 900; font-size: 19px; color: #fff; margin-bottom: 18px; }
+.adim p { margin-top: 10px; color: var(--yazi-soluk); font-size: 16px; }
+
+/* --- Alan kartları --- */
+.alanlar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+@media (max-width: 980px) { .alanlar { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .alanlar { grid-template-columns: 1fr; } }
+.alan {
+  background: var(--kart); border: 1px solid var(--cizgi); border-radius: var(--r);
+  padding: 24px; box-shadow: var(--golge-kart);
+  transition: transform .18s, box-shadow .18s;
+}
+.alan:hover { transform: translateY(-5px); box-shadow: 0 14px 34px rgba(76,31,176,.16); }
+.alan .simge {
+  width: 54px; height: 54px; border-radius: 16px; display: grid; place-items: center;
+  font-weight: 900; font-size: 17px; color: #fff; margin-bottom: 16px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.alan h3 { font-size: 18px; }
+.alan p { margin-top: 8px; font-size: 15px; color: var(--yazi-soluk); line-height: 1.5; }
+.alan .kuyruk { margin-top: 16px; font-size: 13px; font-weight: 700; color: var(--yazi-soluk);
+                display: flex; align-items: center; gap: 6px; }
+
+/* --- Özellik satırları --- */
+.ozellik { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+           padding: 62px 0; }
+.ozellik + .ozellik { border-top: 1px solid var(--cizgi); }
+.ozellik.ters .gorsel { order: -1; }
+@media (max-width: 900px) {
+  .ozellik { grid-template-columns: 1fr; gap: 36px; padding: 46px 0; }
+  .ozellik.ters .gorsel { order: 0; }
+}
+.ozellik h2 { font-size: clamp(26px, 3.4vw, 34px); }
+.ozellik .metin p { margin-top: 16px; color: var(--yazi-soluk); font-size: 17px; }
+.liste { margin: 22px 0 0; padding: 0; list-style: none; display: grid; gap: 11px; }
+.liste li { display: flex; gap: 11px; align-items: flex-start; font-size: 16px; }
+.liste li::before {
+  content: "✓"; flex: 0 0 22px; height: 22px; margin-top: 2px;
+  background: var(--basari); color: #fff; border-radius: 50%;
+  display: grid; place-items: center; font-size: 12px; font-weight: 900;
+}
+
+/* --- Telefon maketi --- */
+.telefon {
+  width: 300px; max-width: 82vw; margin: 0 auto; border-radius: 38px;
+  background: #0B0A1F; padding: 12px; box-shadow: 0 26px 60px rgba(76,31,176,.28);
+  border: 1px solid rgba(255,255,255,.1);
+}
+.ekran { background: #0B0A1F; border-radius: 28px; overflow: hidden; color: #fff;
+         padding: 20px 18px 24px; font-size: 14px; }
+.ekran-ust { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; font-weight: 800; }
+.cubuk { flex: 1; height: 12px; border-radius: 999px; background: #2A2550; overflow: hidden; }
+.cubuk i { display: block; height: 100%; width: 62%; border-radius: 999px;
+           background: linear-gradient(90deg, #22C55E, #7BE495); }
+.ekran h4 { margin: 0 0 16px; font-size: 17px; font-weight: 800; letter-spacing: -.02em; }
+.kod-kutu {
+  background: #171433; border: 1px solid #2A2550; border-radius: 14px;
+  padding: 14px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px; line-height: 1.75; margin-bottom: 16px; white-space: pre;
+  overflow-x: auto;
+}
+.kod-kutu .mor { color: #C4B5FD; } .kod-kutu .sari { color: #FBBF24; }
+.kod-kutu .yesil { color: #7BE495; } .kod-kutu .gri { color: #6E688F; }
+.sik { border: 2px solid #2A2550; border-radius: 14px; padding: 12px 14px; margin-bottom: 10px;
+       font-weight: 600; display: flex; align-items: center; gap: 10px; }
+.sik.dogru { border-color: #22C55E; background: rgba(34,197,94,.12); color: #7BE495; }
+.sik .kutucuk { width: 20px; height: 20px; border-radius: 6px; border: 2px solid #2A2550; flex: 0 0 20px; }
+.sik.dogru .kutucuk { border-color: #22C55E; background: #22C55E; }
+
+/* --- Düello maketi --- */
+.duello-maket {
+  background: linear-gradient(150deg, #4C1FB0, #7343E8); border-radius: 26px;
+  padding: 26px; color: #fff; box-shadow: 0 22px 50px rgba(76,31,176,.3);
+  max-width: 380px; margin: 0 auto;
+}
+.duello-sira { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.oyuncu { text-align: center; flex: 1; }
+.oyuncu .yuvarlak { width: 62px; height: 62px; border-radius: 50%; margin: 0 auto 10px;
+                    display: grid; place-items: center; font-size: 26px; font-weight: 900;
+                    background: rgba(255,255,255,.18); border: 2px solid rgba(255,255,255,.35); }
+.oyuncu b { display: block; font-size: 15px; }
+.oyuncu span { font-size: 12px; color: rgba(255,255,255,.7); }
+.vs { font-weight: 900; font-size: 22px; color: #FDE68A; }
+.duello-puan { display: flex; justify-content: space-between; margin-top: 20px;
+               font-size: 30px; font-weight: 900; }
+.duello-alt { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.2);
+              font-size: 13px; color: rgba(255,255,255,.82); text-align: center; }
+
+/* --- Seri maketi --- */
+.seri-maket { background: var(--kart); border: 1px solid var(--cizgi); border-radius: 26px;
+              padding: 26px; box-shadow: var(--golge-kart); max-width: 380px; margin: 0 auto; }
+.seri-ust { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.alev { font-size: 40px; line-height: 1; }
+.seri-ust b { display: block; font-size: 26px; font-weight: 900; letter-spacing: -.02em; }
+.seri-ust span { font-size: 14px; color: var(--yazi-soluk); }
+.gunler { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; text-align: center; }
+.gunler div { font-size: 12px; color: var(--yazi-soluk); font-weight: 700; }
+.gunler i { display: grid; place-items: center; height: 34px; border-radius: 11px;
+            background: var(--zemin-alt); margin-bottom: 6px; font-style: normal; font-size: 15px; }
+.gunler .tamam i { background: var(--seri); color: #fff; }
+.gunler .bugun i { background: transparent; border: 2px dashed var(--seri); color: var(--seri); }
+
+/* --- Fiyat --- */
+.fiyatlar { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 800px; margin: 0 auto; }
+@media (max-width: 720px) { .fiyatlar { grid-template-columns: 1fr; } }
+.plan { background: var(--kart); border: 2px solid var(--cizgi); border-radius: var(--r);
+        padding: 32px 28px; position: relative; }
+.plan.one { border-color: var(--ana); box-shadow: 0 14px 40px rgba(115,67,232,.18); }
+.plan .rozet { position: absolute; top: -13px; left: 28px; background: var(--ana); color: #fff;
+               font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+               padding: 6px 13px; border-radius: 999px; }
+.plan h3 { font-size: 19px; }
+.plan .tutar { font-size: 40px; font-weight: 900; letter-spacing: -.03em; margin: 12px 0 4px; }
+.plan .tutar small { font-size: 16px; font-weight: 700; color: var(--yazi-soluk); }
+.plan .aciklama { font-size: 14px; color: var(--yazi-soluk); }
+.plan .liste { margin-top: 22px; }
+.plan .liste li { font-size: 15px; }
+
+/* --- SSS --- */
+.sss { max-width: 760px; margin: 0 auto; display: grid; gap: 12px; }
+.sss details { background: var(--kart); border: 1px solid var(--cizgi); border-radius: 16px;
+               padding: 18px 22px; }
+.sss summary { font-weight: 700; cursor: pointer; list-style: none; font-size: 17px;
+               display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.sss summary::-webkit-details-marker { display: none; }
+.sss summary::after { content: "+"; font-size: 24px; font-weight: 400; color: var(--ana); flex: 0 0 auto; }
+.sss details[open] summary::after { content: "−"; }
+.sss p { margin-top: 12px; color: var(--yazi-soluk); font-size: 16px; }
+
+/* --- Kapanış --- */
+.kapanis {
+  background: linear-gradient(150deg, #4C1FB0, #7343E8 60%, #8B5CF6);
+  color: #fff; text-align: center; padding: 92px 0; position: relative; overflow: hidden;
+}
+.kapanis h2 { color: #fff; }
+.kapanis p { margin-top: 16px; color: rgba(255,255,255,.86); font-size: 18px; }
+.kapanis .cta-sira { justify-content: center; }
+.kapanis img { width: 120px; margin-bottom: 24px; filter: drop-shadow(0 14px 28px rgba(0,0,0,.35)); }
+
+/* --- Alt bilgi --- */
+footer.dip { background: var(--zemin-alt); border-top: 1px solid var(--cizgi); padding: 52px 0 40px; }
+.dip-sira { display: flex; flex-wrap: wrap; gap: 32px; justify-content: space-between; align-items: flex-start; }
+.dip-baglar { display: flex; flex-wrap: wrap; gap: 26px; }
+.dip-baglar a { color: var(--yazi-soluk); font-weight: 600; font-size: 15px; }
+.dip-baglar a:hover { color: var(--ana); }
+.dip-not { margin-top: 34px; padding-top: 24px; border-top: 1px solid var(--cizgi);
+           color: var(--yazi-soluk); font-size: 14px; display: flex; flex-wrap: wrap;
+           gap: 10px; justify-content: space-between; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; scroll-behavior: auto !important; }
+}
 </style>
 </head>
 <body>
-  <h1>AhtaCode</h1>
-  <p class="alt">Kod öğrenmenin oyunlaştırılmış hâli. Yakında.</p>
 
-  <nav>
-    <a href="/gizlilik.html">Gizlilik Politikası</a>
-    <a href="/kosullar.html">Kullanım Koşulları</a>
-  </nav>
+<header id="ustCubuk">
+  <div class="kap">
+    <a class="marka" href="/">
+      <img src="/gorsel/icon.png" alt="">
+      AhtaCode
+    </a>
+    <nav class="ust">
+      <a href="#nasil">Nasıl çalışır</a>
+      <a href="#alanlar">Alanlar</a>
+      <a href="#ozellikler">Özellikler</a>
+      <a href="#fiyat">Fiyat</a>
+      <a href="#sss">SSS</a>
+      <a class="dugme dugme-ana ust-cta" href="#indir">Ücretsiz başla</a>
+    </nav>
+  </div>
+</header>
 
-  <footer>İletişim: <a href="mailto:destek@ahtacode.com">destek@ahtacode.com</a></footer>
+<!-- ========================= KAHRAMAN ========================= -->
+<section class="kahraman">
+  <span class="kabarcik" style="width:220px;height:220px;top:-60px;left:6%"></span>
+  <span class="kabarcik" style="width:130px;height:130px;bottom:-30px;left:38%;animation-delay:2s"></span>
+  <span class="kabarcik" style="width:300px;height:300px;top:20%;right:-90px;animation-delay:4s"></span>
+
+  <div class="kap">
+    <div>
+      <span class="rozet-ust">🇹🇷 Tamamen Türkçe · 4.000+ soru</span>
+      <h1>Kod öğrenmek <em>oyun gibi</em> olsun.</h1>
+      <p class="alt">
+        Günde 5 dakika. Sıfırdan başla, seri yap, arkadaşlarınla
+        düello at. Ders gibi değil — oyun gibi.
+      </p>
+      <div class="cta-sira">
+        <a class="dugme dugme-ana" href="#indir">Ücretsiz başla</a>
+        <a class="dugme dugme-beyaz" href="#nasil">Nasıl çalışıyor?</a>
+      </div>
+      <p class="cta-not">Kart bilgisi yok · İstediğin an bırak</p>
+    </div>
+
+    <div class="maskot-alan">
+      <span class="maskot-halka"></span>
+      <img src="/gorsel/varsayilan.png" alt="AhtaCode maskotu, mor bir ahtapot">
+      <span class="ucan a">🔥 <span>12 günlük seri</span></span>
+      <span class="ucan b">⭐ <span>+50 XP</span></span>
+      <span class="ucan c">👑 <span>Bölüm tamam!</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= SAYILAR ========================= -->
+<div class="seritler">
+  <div class="kap">
+    <div class="serit">
+      <div><b>8</b><span>öğrenme alanı</span></div>
+      <div><b>4.000+</b><span>soru ve alıştırma</span></div>
+      <div><b>622</b><span>ünite</span></div>
+      <div><b>5 dk</b><span>günlük hedef</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= NASIL ÇALIŞIR ========================= -->
+<section class="blok" id="nasil">
+  <div class="kap">
+    <div class="baslik-orta">
+      <span class="etiket">Nasıl çalışır</span>
+      <h2>Üç adımda başla</h2>
+      <p>Kurulum yok, hazırlık yok. İlk dersin ilk dakikada başlıyor.</p>
+    </div>
+
+    <div class="adimlar">
+      <div class="adim">
+        <div class="no" style="background:var(--ana)">1</div>
+        <h3>Alanını seç</h3>
+        <p>
+          Python, JavaScript, SQL… Hiç kod bilmiyorsan
+          <strong>Programlama Temelleri</strong> seni dilden bağımsız
+          olarak sıfırdan alıyor.
+        </p>
+      </div>
+      <div class="adim">
+        <div class="no" style="background:var(--elmas)">2</div>
+        <h3>Seviyeni bul</h3>
+        <p>
+          Bir şeyler biliyorsan kısa bir tespit sınavı seviyeni ölçüyor
+          ve bildiğin ünitelerin üstünden atlıyor. Baştan başlamak
+          zorunda değilsin.
+        </p>
+      </div>
+      <div class="adim">
+        <div class="no" style="background:var(--seri)">3</div>
+        <h3>Serini bozma</h3>
+        <p>
+          Her gün bir ders. Seri büyüdükçe sandıklar açılıyor,
+          taçlar toplanıyor ve sıralamada yükseliyorsun.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= ALANLAR ========================= -->
+<section class="blok alt" id="alanlar">
+  <div class="kap">
+    <div class="baslik-orta">
+      <span class="etiket">Öğrenme alanları</span>
+      <h2>Sekiz alan, tek uygulama</h2>
+      <p>
+        Her alanın üç kademesi var: temel yol, meydan okuma ve usta yolu.
+        Kolaydan başlayıp gerçek mühendislik kararlarına kadar gidiyor.
+      </p>
+    </div>
+
+    <div class="alanlar">
+      <div class="alan">
+        <div class="simge" style="background:var(--ana)">{ }</div>
+        <h3>Programlama Temelleri</h3>
+        <p>Hiç kod bilmiyorsan buradan başla. Dilden bağımsız kavramlar.</p>
+        <div class="kuyruk">🌱 Başlangıç</div>
+      </div>
+      <div class="alan">
+        <div class="simge" style="background:var(--seri)">&lt;/&gt;</div>
+        <h3>HTML &amp; CSS</h3>
+        <p>Web sayfası yap. Yazdığın her şey anında ekranda görünür.</p>
+        <div class="kuyruk">🌱 Başlangıç</div>
+      </div>
+      <div class="alan">
+        <div class="simge" style="background:var(--altin);color:#3B2500">JS</div>
+        <h3>JavaScript</h3>
+        <p>Web sayfalarını canlandır. Bu uygulamanın da yazıldığı dil.</p>
+        <div class="kuyruk">⚡ Orta</div>
+      </div>
+      <div class="alan">
+        <div class="simge" style="background:var(--elmas);color:#062B3D">Py</div>
+        <h3>Python</h3>
+        <p>En popüler ilk dil. Veri, otomasyon, yapay zekâ.</p>
+        <div class="kuyruk">⚡ Orta</div>
+      </div>
+      <div class="alan">
+        <div class="simge" style="background:var(--hata)">Jv</div>
+        <h3>Java</h3>
+        <p>Üniversitelerin ve kurumsal şirketlerin dili. Nesne yönelimli.</p>
+        <div class="kuyruk">🔥 İleri</div>
+      </div>
+      <div class="alan">
+        <div class="simge" style="background:var(--basari)">SQL</div>
+        <h3>SQL</h3>
+        <p>Veritabanına soru sor. Veriyle çalışan herkesin ortak dili.</p>
+        <div class="kuyruk">⚡ Orta</div>
+      </div>
+      <div class="alan">
+        <div class="simge" style="background:#4B5563">&gt;_</div>
+        <h3>Terminal</h3>
+        <p>Komut satırını öğren. Her geliştiricinin günlük aracı.</p>
+        <div class="kuyruk">⚡ Orta</div>
+      </div>
+      <div class="alan">
+        <div class="simge" style="background:var(--pembe)">Σ</div>
+        <h3>Algoritma</h3>
+        <p>Maliyeti sezmek, doğru veri yapısını seçmek, ölçüp karar vermek.</p>
+        <div class="kuyruk">🔥 İleri</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= ÖZELLİKLER ========================= -->
+<section class="blok" id="ozellikler">
+  <div class="kap">
+    <div class="baslik-orta">
+      <span class="etiket">Özellikler</span>
+      <h2>Neden bırakmıyorsun?</h2>
+      <p>Çünkü öğrenmek zor değil — devam etmek zor. AhtaCode o kısmı çözüyor.</p>
+    </div>
+
+    <!-- Ders -->
+    <div class="ozellik">
+      <div class="metin">
+        <h2>Dersler kısa, sorular gerçek</h2>
+        <p>
+          Uzun anlatım yok. Her ünite 6 ila 10 soruluk kısa bir tur —
+          bir kahve molasında bitiyor.
+        </p>
+        <ul class="liste">
+          <li>Çoktan seçmeli, kod yazma, sıralama ve hata bulma soruları</li>
+          <li>Her cevaptan sonra <strong>neden</strong> öyle olduğunun açıklaması</li>
+          <li>Yanlışlar tekrar karşına çıkıyor, unutmadan pekişiyor</li>
+        </ul>
+      </div>
+      <div class="gorsel">
+        <div class="telefon">
+          <div class="ekran">
+            <div class="ekran-ust">
+              <span>✕</span>
+              <span class="cubuk"><i></i></span>
+              <span>❤️ 5</span>
+            </div>
+            <h4>Bu kod ne yazdırır?</h4>
+            <div class="kod-kutu"><span class="mor">for</span> i <span class="mor">in</span> <span class="sari">range</span>(<span class="yesil">3</span>):
+    <span class="sari">print</span>(i * <span class="yesil">2</span>)</div>
+            <div class="sik"><span class="kutucuk"></span> 1 2 3</div>
+            <div class="sik dogru"><span class="kutucuk"></span> 0 2 4</div>
+            <div class="sik"><span class="kutucuk"></span> 2 4 6</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Düello -->
+    <div class="ozellik ters">
+      <div class="metin">
+        <h2>Canlı düello</h2>
+        <p>
+          Başka bir kullanıcıyla eşleş, aynı beş soruyu aynı anda yanıtla.
+          Hem doğru hem hızlı olan kazanıyor.
+        </p>
+        <ul class="liste">
+          <li>Gerçek zamanlı eşleşme, saniyeler içinde</li>
+          <li>Hızlı cevap fazladan puan getiriyor</li>
+          <li>Kazanınca XP, sıralamada yükseliş ve rozet</li>
+        </ul>
+      </div>
+      <div class="gorsel">
+        <div class="duello-maket">
+          <div class="duello-sira">
+            <div class="oyuncu">
+              <div class="yuvarlak">🐙</div>
+              <b>Sen</b><span>Seviye 12</span>
+            </div>
+            <div class="vs">VS</div>
+            <div class="oyuncu">
+              <div class="yuvarlak">🦊</div>
+              <b>Rakip</b><span>Seviye 11</span>
+            </div>
+          </div>
+          <div class="duello-puan"><span>340</span><span>280</span></div>
+          <div class="duello-alt">Soru 4 / 5 · kalan süre 00:09</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seri -->
+    <div class="ozellik">
+      <div class="metin">
+        <h2>Seri, görevler ve sandıklar</h2>
+        <p>
+          Her gün girmek için küçük ama gerçek sebepler. Seri büyüdükçe
+          bırakmak zorlaşıyor — mesele tam olarak bu.
+        </p>
+        <ul class="liste">
+          <li>Günlük hedef ve gün serisi takibi</li>
+          <li>Günlük ve haftalık görevler</li>
+          <li>Yedi günü tamamlayınca haftalık sandık</li>
+          <li>Nazik hatırlatma bildirimleri — istersen kapalı</li>
+        </ul>
+      </div>
+      <div class="gorsel">
+        <div class="seri-maket">
+          <div class="seri-ust">
+            <span class="alev">🔥</span>
+            <div><b>12 gün</b><span>En uzun serin: 18 gün</span></div>
+          </div>
+          <div class="gunler">
+            <div class="tamam"><i>✓</i>Pzt</div>
+            <div class="tamam"><i>✓</i>Sal</div>
+            <div class="tamam"><i>✓</i>Çar</div>
+            <div class="tamam"><i>✓</i>Per</div>
+            <div class="tamam"><i>✓</i>Cum</div>
+            <div class="bugun"><i>•</i>Cmt</div>
+            <div><i></i>Paz</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ustalık -->
+    <div class="ozellik ters">
+      <div class="metin">
+        <h2>Taçlar ve usta yolu</h2>
+        <p>
+          Bir üniteyi bitirmek yetmez. Hatasız bitirdiğinde taç kazanıyorsun
+          ve o alanın usta katmanı açılıyor.
+        </p>
+        <ul class="liste">
+          <li>Her alanda üç kademe: temel yol, meydan okuma, usta yolu</li>
+          <li>Usta yolunda ezber değil karar soruları var</li>
+          <li>Bildiğin bölümü atlama sınavıyla geçebiliyorsun</li>
+          <li>Atölyede gerçek problemler üzerinde pratik</li>
+        </ul>
+      </div>
+      <div class="gorsel" style="text-align:center">
+        <img src="/gorsel/kupa.png" alt="Kupa tutan AhtaCode maskotu" style="width:min(280px,70vw)">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= FİYAT ========================= -->
+<section class="blok alt" id="fiyat">
+  <div class="kap">
+    <div class="baslik-orta">
+      <span class="etiket">Fiyat</span>
+      <h2>Ücretsiz başla</h2>
+      <p>Öğrenmenin büyük kısmı ücretsiz. Premium sınırları kaldırıyor.</p>
+    </div>
+
+    <div class="fiyatlar">
+      <div class="plan">
+        <h3>Ücretsiz</h3>
+        <div class="tutar">0 ₺</div>
+        <p class="aciklama">Süresiz. Kart bilgisi istemiyoruz.</p>
+        <ul class="liste">
+          <li>Sekiz alanın tamamına erişim</li>
+          <li>Günlük hedef, seri ve görevler</li>
+          <li>Düello ve sıralama</li>
+          <li>Günde 3 atölye alıştırması</li>
+        </ul>
+      </div>
+
+      <div class="plan one">
+        <span class="rozet">İlk ay 9,90 ₺</span>
+        <h3>Premium</h3>
+        <div class="tutar">39,90 ₺<small> / ay</small></div>
+        <p class="aciklama">İstediğin an iptal edebilirsin.</p>
+        <ul class="liste">
+          <li>Sınırsız can — yanlışta beklemek yok</li>
+          <li>Sınırsız atölye alıştırması</li>
+          <li>Tüm ileri seviye bölümler</li>
+          <li>Reklamsız</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= SSS ========================= -->
+<section class="blok" id="sss">
+  <div class="kap">
+    <div class="baslik-orta">
+      <span class="etiket">Sık sorulanlar</span>
+      <h2>Merak edilenler</h2>
+    </div>
+
+    <div class="sss">
+      <details open>
+        <summary>Hiç kod bilmiyorum, yine de olur mu?</summary>
+        <p>
+          Tam olarak bunun için yazıldı. <strong>Programlama Temelleri</strong>
+          alanı hiçbir dil varsaymıyor: değişken, koşul, döngü ve fonksiyon
+          gibi kavramları Türkçe sözde kodla anlatıyor. Oradan sonra hangi
+          dile geçersen geç, kavramlar aynı kalıyor.
+        </p>
+      </details>
+      <details>
+        <summary>Günde ne kadar zaman ayırmam gerekiyor?</summary>
+        <p>
+          Beş dakika yeterli. Üniteler bilerek kısa tutuldu — asıl mesele
+          uzun çalışmak değil, her gün girmek. Serini korumak günde bir
+          ünite bitirmekle oluyor.
+        </p>
+      </details>
+      <details>
+        <summary>Bir şeyler biliyorum, baştan başlamak zorunda mıyım?</summary>
+        <p>
+          Hayır. Alanı seçtiğinde kısa bir tespit sınavı teklif ediliyor;
+          seviyeni ölçüp bildiğin ünitelerin üstünden atlıyor. Ayrıca
+          herhangi bir bölümü atlama sınavıyla da geçebiliyorsun.
+        </p>
+      </details>
+      <details>
+        <summary>Ücretsiz sürümde ne kadarı açık?</summary>
+        <p>
+          Sekiz alanın tamamı, düello, sıralama, seri ve görevler ücretsiz.
+          Premium canları sınırsız yapıyor, atölye alıştırmalarının günlük
+          sınırını kaldırıyor ve ileri bölümleri açıyor.
+        </p>
+      </details>
+      <details>
+        <summary>Verilerim ne oluyor?</summary>
+        <p>
+          İlerleme ve profil bilgin Avrupa Birliği sunucularında (Frankfurt)
+          tutuluyor. Uygulama içinden tek dokunuşla hesabını ve tüm verilerini
+          kalıcı olarak silebiliyorsun. Ayrıntılar
+          <a href="/gizlilik.html">gizlilik politikasında</a>.
+        </p>
+      </details>
+      <details>
+        <summary>Ne zaman yayınlanacak?</summary>
+        <p>
+          App Store ve Google Play için hazırlık sürüyor. Çıktığında haberdar
+          olmak istersen <a href="mailto:destek@ahtacode.com">destek@ahtacode.com</a> adresine
+          yazman yeterli.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= KAPANIŞ ========================= -->
+<section class="kapanis" id="indir">
+  <span class="kabarcik" style="width:260px;height:260px;top:-80px;left:8%"></span>
+  <span class="kabarcik" style="width:180px;height:180px;bottom:-60px;right:10%;animation-delay:3s"></span>
+  <div class="kap">
+    <img src="/gorsel/ninja.png" alt="">
+    <h2>İlk dersin seni bekliyor</h2>
+    <p>Yakında App Store ve Google Play'de. Çıktığında ilk sen bil.</p>
+    <div class="cta-sira">
+      <a class="dugme dugme-beyaz" href="mailto:destek@ahtacode.com?subject=AhtaCode%20çıkınca%20haber%20ver">
+        Çıkınca haber ver
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= ALT BİLGİ ========================= -->
+<footer class="dip">
+  <div class="kap">
+    <div class="dip-sira">
+      <div>
+        <a class="marka" href="/"><img src="/gorsel/icon.png" alt="">AhtaCode</a>
+        <p style="margin-top:12px;color:var(--yazi-soluk);font-size:15px;max-width:34ch">
+          Kod öğrenmenin oyunlaştırılmış hâli. Türkçe, ücretsiz, her yerde.
+        </p>
+      </div>
+      <nav class="dip-baglar">
+        <a href="#nasil">Nasıl çalışır</a>
+        <a href="#alanlar">Alanlar</a>
+        <a href="#fiyat">Fiyat</a>
+        <a href="#sss">SSS</a>
+        <a href="/gizlilik.html">Gizlilik</a>
+        <a href="/kosullar.html">Koşullar</a>
+        <a href="mailto:destek@ahtacode.com">İletişim</a>
+      </nav>
+    </div>
+    <div class="dip-not">
+      <span>© 2026 AhtaCode</span>
+      <span>destek@ahtacode.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Üst çubuk sayfa kayınca alt çizgi kazanıyor; en tepedeyken
+  // çizgisiz durması kahraman bölümüyle daha temiz birleşiyor.
+  var ust = document.getElementById('ustCubuk');
+  var kontrol = function () {
+    ust.classList.toggle('kaydi', window.scrollY > 8);
+  };
+  kontrol();
+  window.addEventListener('scroll', kontrol, { passive: true });
+</script>
+
 </body>
 </html>
