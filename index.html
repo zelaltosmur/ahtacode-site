@@ -136,23 +136,14 @@ header .kap { display: flex; align-items: center; gap: 28px; height: 72px; }
 nav.ust { margin-left: auto; display: flex; gap: 26px; align-items: center; }
 nav.ust a { color: var(--yazi-soluk); font-weight: 600; font-size: 15px; }
 nav.ust a:hover { color: var(--ana); }
-.ust-cta { padding: 11px 20px; font-size: 14px; border-radius: 13px; }
-@media (max-width: 860px) { nav.ust a:not(.ust-cta) { display: none; } }
+/* Bağlantılar dar ekranda sığmıyor; üst çubukta marka kalıyor.
+   Sayfanın kendisi zaten yukarıdan aşağı okunuyor. */
+@media (max-width: 860px) { nav.ust { display: none; } }
 
-/* Dar ekranda marka ile düğme yan yana sığmıyor ve üst çubuk
-   sayfayı yatay kaydırılabilir hale getiriyordu — kaydırma
-   çubuğu tüm sayfada görünüyor, tek bir öğe taşsa bile. */
 @media (max-width: 420px) {
   .kap { padding: 0 16px; }
-  header .kap { gap: 10px; }
   .marka { font-size: 18px; }
   .marka img { width: 30px; height: 30px; }
-  .ust-cta { padding: 10px 14px; font-size: 13px; }
-}
-/* Bu genişliğin altında marka adı da sığmıyor; ikon tek başına
-   kalıyor, düğme kalıyor. Düğme her koşulda görünmeli. */
-@media (max-width: 340px) {
-  .marka { font-size: 0; gap: 0; }
 }
 
 /* ------------------------------------------------------------
@@ -417,7 +408,6 @@ footer.dip { background: var(--zemin-alt); border-top: 1px solid var(--cizgi); p
       <a href="#ozellikler">Özellikler</a>
       <a href="#fiyat">Fiyat</a>
       <a href="#sss">SSS</a>
-      <a class="dugme dugme-ana ust-cta" href="#indir">Ücretsiz başla</a>
     </nav>
   </div>
 </header>
