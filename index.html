@@ -345,6 +345,12 @@ section.blok.alt { background: var(--zemin-alt); }
 /* --- Fiyat --- */
 .fiyatlar { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 800px; margin: 0 auto; }
 @media (max-width: 720px) { .fiyatlar { grid-template-columns: 1fr; } }
+/* Tek plan kaldığı için ızgara tek sütuna iniyor ve ortalanıyor.
+   İki sütunluk kalıbı silmiyoruz: premium geri geldiğinde
+   yeniden kullanılacak. */
+.fiyatlar.tek { grid-template-columns: 1fr; max-width: 420px; }
+.kucuk-not { margin-top: 22px; text-align: center; color: var(--yazi-soluk);
+             font-size: 14.5px; max-width: 46ch; margin-left: auto; margin-right: auto; }
 .plan { background: var(--kart); border: 2px solid var(--cizgi); border-radius: var(--r);
         padding: 32px 28px; position: relative; }
 .plan.one { border-color: var(--ana); box-shadow: 0 14px 40px rgba(115,67,232,.18); }
@@ -406,7 +412,7 @@ footer.dip { background: var(--zemin-alt); border-top: 1px solid var(--cizgi); p
       <a href="#nasil">Nasıl çalışır</a>
       <a href="#alanlar">Alanlar</a>
       <a href="#ozellikler">Özellikler</a>
-      <a href="#fiyat">Fiyat</a>
+      <a href="#ucretsiz">Ücretsiz</a>
       <a href="#sss">SSS</a>
     </nav>
   </div>
@@ -691,41 +697,40 @@ footer.dip { background: var(--zemin-alt); border-top: 1px solid var(--cizgi); p
   </div>
 </section>
 
-<!-- ========================= FİYAT ========================= -->
-<section class="blok alt" id="fiyat">
+<!-- ========================= ÜCRETSİZ ========================= -->
+<!-- Eskiden burada iki plan yan yana duruyordu (Ücretsiz /
+     Premium). 1.0 ücretsiz çıktığı için tek sütuna indirildi:
+     olmayan bir ürünün fiyatını göstermek hem yanıltıcı hem de
+     "acaba sonra para mı isteyecek" sorusunu doğuruyor.
+
+     Sonradan gelecek olanı gizlemiyoruz ama fiyat da vermiyoruz;
+     rakam söylemek söz vermek demek. -->
+<section class="blok alt" id="ucretsiz">
   <div class="kap">
     <div class="baslik-orta">
-      <span class="etiket">Fiyat</span>
-      <h2>Ücretsiz başla</h2>
-      <p>Öğrenmenin büyük kısmı ücretsiz. Premium sınırları kaldırıyor.</p>
+      <span class="etiket">Ücretsiz</span>
+      <h2>Tamamen ücretsiz</h2>
+      <p>Kart bilgisi yok, deneme süresi yok, reklam yok.</p>
     </div>
 
-    <div class="fiyatlar">
-      <div class="plan">
-        <h3>Ücretsiz</h3>
-        <div class="tutar">0 ₺</div>
-        <p class="aciklama">Süresiz. Kart bilgisi istemiyoruz.</p>
-        <ul class="liste">
-          <li>Sekiz alanın tamamına erişim</li>
-          <li>Günlük hedef, seri ve görevler</li>
-          <li>Düello ve sıralama</li>
-          <li>Günde 3 atölye alıştırması</li>
-        </ul>
-      </div>
-
+    <div class="fiyatlar tek">
       <div class="plan one">
-        <span class="rozet">İlk ay 9,90 ₺</span>
-        <h3>Premium</h3>
-        <div class="tutar">39,90 ₺<small> / ay</small></div>
-        <p class="aciklama">İstediğin an iptal edebilirsin.</p>
+        <div class="tutar">0 ₺</div>
+        <p class="aciklama">Sekiz alan, 300'den fazla ünite, 2000'den fazla soru.</p>
         <ul class="liste">
-          <li>Sınırsız can — yanlışta beklemek yok</li>
-          <li>Sınırsız atölye alıştırması</li>
-          <li>Tüm ileri seviye bölümler</li>
-          <li>Reklamsız</li>
+          <li>Sekiz alanın tamamı açık</li>
+          <li>Günlük hedef, gün serisi ve görevler</li>
+          <li>Düello ve haftalık lig</li>
+          <li>Günde 3 kod atölyesi alıştırması</li>
+          <li>Günde 10 can</li>
         </ul>
       </div>
     </div>
+
+    <p class="kucuk-not">
+      Meydan Okuma ve Usta Yolu üzerinde çalışıyoruz; ana yolu bitirdiğinde
+      seni orada bekliyor olacaklar.
+    </p>
   </div>
 </section>
 
@@ -764,11 +769,12 @@ footer.dip { background: var(--zemin-alt); border-top: 1px solid var(--cizgi); p
         </p>
       </details>
       <details>
-        <summary>Ücretsiz sürümde ne kadarı açık?</summary>
+        <summary>Gerçekten ücretsiz mi?</summary>
         <p>
-          Sekiz alanın tamamı, düello, sıralama, seri ve görevler ücretsiz.
-          Premium canları sınırsız yapıyor, atölye alıştırmalarının günlük
-          sınırını kaldırıyor ve ileri bölümleri açıyor.
+          Evet. Sekiz alanın ana yolu, düello, lig, seri, görevler ve kod
+          atölyesi ücretsiz. Kart bilgisi istemiyoruz, deneme süresi yok,
+          reklam yok. Meydan Okuma ve Usta Yolu katmanları henüz
+          yayınlanmadı; hazır olduklarında ne olacağını burada duyuracağız.
         </p>
       </details>
       <details>
@@ -783,9 +789,8 @@ footer.dip { background: var(--zemin-alt); border-top: 1px solid var(--cizgi); p
       <details>
         <summary>Ne zaman yayınlanacak?</summary>
         <p>
-          App Store ve Google Play için hazırlık sürüyor. Çıktığında haberdar
-          olmak istersen <a href="mailto:info@ahtacode.com">info@ahtacode.com</a> adresine
-          yazman yeterli.
+          App Store için hazırlık sürüyor. Çıktığında haberdar olmak istersen
+          <a href="mailto:info@ahtacode.com">info@ahtacode.com</a> adresine yazman yeterli.
         </p>
       </details>
     </div>
@@ -821,7 +826,7 @@ footer.dip { background: var(--zemin-alt); border-top: 1px solid var(--cizgi); p
       <nav class="dip-baglar">
         <a href="#nasil">Nasıl çalışır</a>
         <a href="#alanlar">Alanlar</a>
-        <a href="#fiyat">Fiyat</a>
+        <a href="#ucretsiz">Ücretsiz</a>
         <a href="#sss">SSS</a>
         <a href="/gizlilik.html">Gizlilik</a>
         <a href="/kosullar.html">Koşullar</a>
