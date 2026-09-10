@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AhtaCode — Davet</title>
+<meta name="description" content="Bir arkadaşın seni AhtaCode'a davet etti. Uygulamayı indir, davet kodunu gir, ikiniz de can kazanın.">
+<link rel="icon" href="/gorsel/favicon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="AhtaCode'a davet edildin">
+<meta property="og:description" content="Türkçe, ücretsiz ve oyun gibi kod öğrenme uygulaması. Davet kodunla başla.">
+<meta property="og:image" content="https://ahtacode.com/gorsel/kart.png">
+<meta property="og:url" content="https://ahtacode.com/davet/">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Davet sayfası arama sonuçlarında işe yaramaz: içeriği
+     tamamen kişiye özel ve koda bağlı. -->
+<meta name="robots" content="noindex">
+
+<style>
+/* ============================================================
+   AhtaCode — davet sayfası
+   ------------------------------------------------------------
+   Renkler ana sayfadan birebir alındı (index.html → :root).
+   Ayrı dosya olmasının sebebi: bu sayfa ana sayfanın tanıtım
+   akışını değil tek bir işi yapıyor — kodu göster, mağazaya
+   gönder.
+
+   NEDEN KOD YOL DEĞİL SORGU PARAMETRESİ
+   Site GitHub Pages'te statik duruyor. /davet/ABC123 gibi bir
+   yol için o adda gerçek bir dosya gerekirdi; her kullanıcının
+   kodu için dosya üretmek mümkün değil. /davet/?k=ABC123
+   tek bir dosyayla tüm kodları karşılıyor.
+   ============================================================ */
+
+:root {
+  --ana:        #7343E8;
+  --ana-parlak: #8B5CF6;
+  --ana-acik:   #C4B5FD;
+  --basari:     #22C55E;
+
+  --zemin:      #FFFFFF;
+  --zemin-alt:  #F6F5FB;
+  --kart:       #FFFFFF;
+  --cizgi:      #E4E0F2;
+  --yazi:       #16123A;
+  --yazi-soluk: #5F5983;
+
+  --golge-kart: 0 4px 24px rgba(76,31,176,.08);
+  --r:          20px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ana:        #8B5CF6;
+    --ana-acik:   #C4B5FD;
+    --zemin:      #0B0A1F;
+    --zemin-alt:  #12102B;
+    --kart:       #171433;
+    --cizgi:      #2A2550;
+    --yazi:       #FFFFFF;
+    --yazi-soluk: #A9A3C7;
+    --golge-kart: 0 4px 24px rgba(0,0,0,.35);
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: var(--zemin-alt);
+  color: var(--yazi);
+  font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter",
+        Roboto, "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.kart {
+  width: 100%;
+  max-width: 460px;
+  background: var(--kart);
+  border: 1px solid var(--cizgi);
+  border-radius: var(--r);
+  box-shadow: var(--golge-kart);
+  padding: 32px 28px;
+  text-align: center;
+}
+
+.marka {
+  color: var(--ana);
+  font-weight: 800;
+  letter-spacing: 4px;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+h1 { font-size: 24px; line-height: 1.3; margin: 0 0 8px; }
+
+.alt {
+  color: var(--yazi-soluk);
+  font-size: 15px;
+  margin: 0 0 24px;
+}
+
+/* ---------- kod kutusu ---------- */
+.kod-kutu {
+  background: var(--zemin-alt);
+  border: 1px dashed var(--cizgi);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 20px;
+}
+
+.kod-etiket {
+  color: var(--yazi-soluk);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+
+.kod {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 8px;
+  color: var(--ana);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.kopyala {
+  margin-top: 12px;
+  background: none;
+  border: 1px solid var(--cizgi);
+  border-radius: 10px;
+  color: var(--yazi-soluk);
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 16px;
+  cursor: pointer;
+  min-height: 40px;
+}
+.kopyala:hover { border-color: var(--ana); color: var(--ana); }
+.kopyala.oldu  { border-color: var(--basari); color: var(--basari); }
+
+/* ---------- indir düğmesi ---------- */
+.indir {
+  display: block;
+  background: var(--ana);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 14px;
+  padding: 16px;
+  min-height: 52px;
+  margin-bottom: 24px;
+}
+.indir:hover { background: var(--ana-parlak); }
+
+/* ---------- adımlar ---------- */
+.adimlar {
+  text-align: left;
+  border-top: 1px solid var(--cizgi);
+  padding-top: 20px;
+  margin: 0;
+  list-style: none;
+  counter-reset: adim;
+  display: grid;
+  gap: 12px;
+}
+
+.adimlar li {
+  counter-increment: adim;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  color: var(--yazi-soluk);
+  font-size: 14px;
+}
+
+.adimlar li::before {
+  content: counter(adim);
+  flex: 0 0 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--zemin-alt);
+  border: 1px solid var(--cizgi);
+  color: var(--ana);
+  font-size: 11px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+}
+
+.dipnot {
+  margin: 20px 0 0;
+  color: var(--yazi-soluk);
+  font-size: 12px;
+}
+.dipnot a { color: var(--ana); }
+</style>
+</head>
+<body>
+
+<main class="kart">
+  <div class="marka">AHTACODE</div>
+
+  <h1>Bir arkadaşın seni davet etti</h1>
+  <p class="alt">
+    Türkçe, ücretsiz ve oyun gibi bir kod öğrenme uygulaması.
+    Kodu girdiğinde seni davet eden kişi can kazanır.
+  </p>
+
+  <!-- Kod yoksa bu blok gizleniyor: kodsuz gelen ziyaretçiye
+       boş bir kutu göstermek kafa karıştırır. -->
+  <div class="kod-kutu" id="kodKutu" hidden>
+    <div class="kod-etiket">DAVET KODU</div>
+    <div class="kod" id="kod"></div>
+    <button class="kopyala" id="kopyala" type="button">Kodu kopyala</button>
+  </div>
+
+  <a class="indir" href="https://apps.apple.com/tr/app/id6798470196">
+    App Store'dan indir
+  </a>
+
+  <ol class="adimlar">
+    <li>Uygulamayı indir ve hesabını oluştur.</li>
+    <li>Profil → <strong>Paylaş ve can kazan</strong> ekranını aç.</li>
+    <li>Davet kodunu gir ve ilk dersini bitir.</li>
+  </ol>
+
+  <p class="dipnot">
+    Kod yalnızca yeni hesaplarda çalışır.
+    <a href="/">AhtaCode hakkında</a>
+  </p>
+</main>
+
+<script>
+// Kodu adresten oku. Sunucu tarafı yok; sayfa tamamen statik.
+// Kodun geçerli olup olmadığı UYGULAMADA doğrulanıyor — burada
+// doğrulamaya çalışmak hem anon anahtar gerektirirdi hem
+// kullanıcıya hiçbir şey kazandırmazdı.
+const kod = (new URLSearchParams(location.search).get('k') || '')
+  .trim()
+  .toUpperCase()
+  // Yalnızca kodun alfabesindeki karakterler: adresten gelen
+  // metni ekrana basmadan önce temizliyoruz.
+  .replace(/[^A-Z0-9]/g, '')
+  .slice(0, 6);
+
+if (kod) {
+  document.getElementById('kod').textContent = kod;
+  document.getElementById('kodKutu').hidden = false;
+  document.title = 'AhtaCode — Davet kodu ' + kod;
+}
+
+document.getElementById('kopyala').addEventListener('click', async (olay) => {
+  const dugme = olay.currentTarget;
+  try {
+    await navigator.clipboard.writeText(kod);
+    dugme.textContent = 'Kopyalandı';
+    dugme.classList.add('oldu');
+    setTimeout(() => {
+      dugme.textContent = 'Kodu kopyala';
+      dugme.classList.remove('oldu');
+    }, 2000);
+  } catch {
+    // Pano izni yoksa (eski tarayıcı, güvensiz bağlam) kod zaten
+    // ekranda büyük yazıyor; elle yazılabilir.
+    dugme.textContent = 'Kodu elle yaz: ' + kod;
+  }
+});
+</script>
+
+</body>
+</html>
